@@ -1,7 +1,8 @@
 image: golang
 
 before_script:
-    - cp -r /builds/ishankhare07/ /go/src/ishankhare07
+    - mkdir -p /go/src/gitlab.com/ishankhare07
+    - cp -r /builds/ishankhare07/ /go/src/gitlab.com/ishankhare07
 
 test:
     stage: test
