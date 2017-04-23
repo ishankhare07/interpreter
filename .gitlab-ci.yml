@@ -3,5 +3,6 @@ image: golang
 test:
     stage: test
     script:
+        - echo $PWD
         - go test ./lexer
         - go test ./token
