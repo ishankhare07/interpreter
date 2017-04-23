@@ -7,6 +7,8 @@ before_script:
 test:
     stage: test
     script:
+        - ls /go/src/gitlab.com/ishankhare07
+        - tree /go/src/gitlab.com/ishankhare07
         - cd /go/src/gitlab.com/ishankhare07/monkey-lang
         - go test ./lexer
         - go test ./token
