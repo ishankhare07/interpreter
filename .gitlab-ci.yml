@@ -1,7 +1,7 @@
 image: golang
 
 before_script:
-    - cp /builds/ishankhare07/ /go/src/ishankhare07
+    - cp -r /builds/ishankhare07/ /go/src/ishankhare07
 
 test:
     stage: test
