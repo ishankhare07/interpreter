@@ -2,11 +2,11 @@ image: golang
 
 before_script:
     - mkdir -p /go/src/gitlab.com/ishankhare07
-    - cp -r /builds/ishankhare07/ /go/src/gitlab.com/
+    - cp -r /builds/ishankhare07/ /go/src/gitlab.com/ishankhare07
 
 test:
     stage: test
     script:
-        - cd /go/src/ishankhare07/monkey-lang
+        - cd /go/src/gitlab.com/ishankhare07/monkey-lang
         - go test ./lexer
         - go test ./token
