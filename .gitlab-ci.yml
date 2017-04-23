@@ -1,8 +1,12 @@
 image: golang
 
+before_script:
+    - volumes:
+        - "/builds/ishankhare07/:/go/src/ishankhare07"
+
 test:
     stage: test
     script:
-        - echo $PWD
+        - cd /go/src/ishankhare07/monkey-lang
         - go test ./lexer
         - go test ./token
