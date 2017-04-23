@@ -1,0 +1,7 @@
+image: golang
+
+test:
+    stage: test
+    script:
+        - go test ./lexer
+        - go test ./token
