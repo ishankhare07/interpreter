@@ -18,6 +18,12 @@ const (
     // operators
     ASSIGN = "="
     PLUS = "+"
+    NOT = "!"
+    MINUS = "-"
+    DIV = "/"
+    MUL = "*"
+    LT = "<"
+    GT = ">"
 
     //Delimiters
     COMMA = ","
