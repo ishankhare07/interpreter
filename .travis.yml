@@ -1,0 +1,4 @@
+languge: go
+go:
+    - 1.8
+script: go get https://gitlab.com/ishankhare07/monkey-lang
