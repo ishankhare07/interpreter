@@ -1,5 +1,5 @@
 languge: go
 go:
     - 1.8
-
-script: go get gitlab.com/ishankhare07/monkey-lang
+go_import_path: gitlab.com/ishankhare07/monkey-lang
+script: tree $GOPATH/src
