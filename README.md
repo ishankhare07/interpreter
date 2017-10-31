@@ -1,1 +1,1 @@
-![Master build status](https://gitlab.com/ishankhare07/monkey-lang/badges/master/build.svg)
+[![Master build status](https://gitlab.com/ishankhare07/monkey-lang/badges/master/build.svg)](https://gitlab.com/ishankhare07/monkey-lang/pipelines)
