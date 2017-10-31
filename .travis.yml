@@ -1,4 +1,5 @@
 languge: go
 go:
     - 1.8
-script: go test ./
+
+script: go get gitlab.com/ishankhare07/monkey-lang
