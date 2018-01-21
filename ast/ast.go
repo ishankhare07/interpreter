@@ -127,7 +127,7 @@ func (rs *ReturnStatement) String() string {
 
 func (rs *ReturnStatement) statementNode() {}
 
-// define type ExpressionStatement
+//============================== define type ExpressionStatement ===========================================//
 type ExpressionStatement struct {
 	Token      token.Token
 	Expression Expression
@@ -158,4 +158,29 @@ func (il *IntegerLiteral) TokenLiteral() string {
 
 func (il *IntegerLiteral) String() string {
 	return il.Token.Literal
+}
+
+//================================ define type PrefixExpression ==============================================//
+type PrefixExpression struct {
+	Token    token.Token // the prefix token eg. !
+	Operator string
+	Right    Expression
+}
+
+func (pe *PrefixExpression) expressionNode() {}
+
+func (pe *PrefixExpression) TokenLiteral() string {
+	return pe.Token.Literal
+}
+
+func (pe *PrefixExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("(")
+	out.WriteString(pe.Operator)
+	out.WriteString(pe.Right.String())
+	out.WriteString(")")
+
+	return out.String()
+
 }
