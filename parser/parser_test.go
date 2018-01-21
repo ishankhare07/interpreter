@@ -244,7 +244,7 @@ func TestParsingInfixExpressions(t *testing.T) {
 		operator   string
 		rightValue int64
 	}{
-		{"5 + 5;", 5, "=", 5},
+		{"5 + 5;", 5, "+", 5},
 		{"5 - 5;", 5, "-", 5},
 		{"5 * 5;", 5, "*", 5},
 		{"5 / 5;", 5, "/", 5},
@@ -254,7 +254,7 @@ func TestParsingInfixExpressions(t *testing.T) {
 		{"5 != 5;", 5, "!=", 5},
 	}
 
-	for __, tt := range infixTests {
+	for _, tt := range infixTests {
 		l := lexer.New(tt.input)
 		p := New(l)
 		program := p.ParseProgram()
@@ -279,10 +279,10 @@ func TestParsingInfixExpressions(t *testing.T) {
 		}
 
 		if exp.Operator != tt.operator {
-			t.FatalF("exp.Operator is not %T. got=%T", tt.operator, exp.Operator)
+			t.Fatalf("exp.Operator is not %s. got=%s", tt.operator, exp.Operator)
 		}
 
-		if !testIntegerLiteral(t, exp.right, tt.rightValue) {
+		if !testIntegerLiteral(t, exp.Right, tt.rightValue) {
 			return
 		}
 	}
