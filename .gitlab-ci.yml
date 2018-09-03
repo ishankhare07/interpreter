@@ -8,7 +8,7 @@ test:
     stage: test
     script:
         - cd /go/src/gitlab.com/ishankhare07/monkey-lang
-        - go test ./lexer
-        - go test ./token
-        - go test ./ast
-        - go test ./parser
+        - go test ./lexer -v
+        - go test ./token -v
+        - go test ./ast -v
+        - go test ./parser -v
