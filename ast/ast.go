@@ -60,7 +60,7 @@ func (ls *LetStatement) TokenLiteral() string {
 
 func (ls *LetStatement) statementNode() {}
 
-// define Identifier type
+// =================================== define Identifier type ==============================
 
 type Identifier struct {
 	Token token.Token
@@ -97,7 +97,7 @@ func (ls *LetStatement) String() string {
 
 func (i *Identifier) expressionNode() {}
 
-// define type ReturnStatement
+// ====================================== define type ReturnStatement ================================
 
 type ReturnStatement struct {
 	Token       token.Token
@@ -209,4 +209,20 @@ func (ie *InfixExpression) String() string {
 	out.WriteString(")")
 
 	return out.String()
+}
+
+//==================================== define type boolean ========================================//
+type Boolean struct {
+	Token token.Token
+	Value bool
+}
+
+func (b *Boolean) expressionNode() {}
+
+func (b *Boolean) TokenLiteral() string {
+	return b.Token.Literal
+}
+
+func (b *Boolean) String() string {
+	return b.Token.Literal
 }
