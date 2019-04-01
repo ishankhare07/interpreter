@@ -56,27 +56,6 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
-// implement Statement interface
-
-func (ls *LetStatement) statementNode() {}
-
-// =================================== define Identifier type ==============================
-
-type Identifier struct {
-	Token token.Token
-	Value string
-}
-
-// implement Node interface
-
-func (i *Identifier) TokenLiteral() string {
-	return i.Token.Literal
-}
-
-func (i *Identifier) String() string {
-	return i.Value
-}
-
 func (ls *LetStatement) String() string {
 	var out bytes.Buffer
 
@@ -93,12 +72,31 @@ func (ls *LetStatement) String() string {
 	return out.String()
 }
 
+// implement Statement interface
+
+func (ls *LetStatement) statementNode() {}
+
+//=================================== define Identifier type =============================//
+type Identifier struct {
+	Token token.Token
+	Value string
+}
+
+// implement Node interface
+
+func (i *Identifier) TokenLiteral() string {
+	return i.Token.Literal
+}
+
+func (i *Identifier) String() string {
+	return i.Value
+}
+
 // implement Expression interface
 
 func (i *Identifier) expressionNode() {}
 
-// ====================================== define type ReturnStatement ================================
-
+//=============================== define type ReturnStatement ============================//
 type ReturnStatement struct {
 	Token       token.Token
 	ReturnValue Expression
@@ -225,4 +223,55 @@ func (b *Boolean) TokenLiteral() string {
 
 func (b *Boolean) String() string {
 	return b.Token.Literal
+}
+
+//==================================== define If Expression ================================================//
+type IfExpression struct {
+	Token       token.Token
+	Condition   Expression
+	Consequence *BlockStatement
+	Alternative *BlockStatement
+}
+
+func (ie *IfExpression) expressionNode() {}
+
+func (ie *IfExpression) TokenLiteral() string {
+	return ie.Token.Literal
+}
+
+func (ie *IfExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("if")
+	out.WriteString(ie.Condition.String())
+	out.WriteString(" ")
+	out.WriteString(ie.Consequence.String())
+
+	if ie.Alternative != nil {
+		out.WriteString(ie.Alternative.String())
+	}
+
+	return out.String()
+}
+
+//====================================== define block statement ================================================//
+type BlockStatement struct {
+	Token      token.Token
+	Statements []Statement
+}
+
+func (bs *BlockStatement) expressionNode() {}
+
+func (bs *BlockStatement) TokenLiteral() string {
+	return bs.Token.Literal
+}
+
+func (bs *BlockStatement) String() string {
+	var out bytes.Buffer
+
+	for _, s := range bs.Statements {
+		out.WriteString(s.String())
+	}
+
+	return out.String()
 }
