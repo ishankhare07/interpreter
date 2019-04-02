@@ -365,6 +365,57 @@ func testInfixExpression(t *testing.T, exp ast.Expression, left interface{}, ope
 	return true
 }
 
+func TestOperatorPrecedenceParsing(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			"true",
+			"true",
+		},
+		{
+			"false",
+			"false",
+		},
+		{
+			"3 > 5 == false",
+			"((3 > 5) == false)",
+		},
+		{
+			"3 < 5 == true",
+			"((3 < 5) == true)",
+		},
+		{
+			"1 + (2 + 3) + 4",
+			"((1 + (2 + 3)) + 4)",
+		},
+		{
+			"(5 + 5) * 2",
+			"((5 + 5) * 2)",
+		},
+		{
+			"2 / (5 + 5)",
+			"(2 / (5 + 5))",
+		},
+		{
+			"!(true == true)",
+			"(!(true == true))",
+		},
+	}
+
+	for _, tt := range tests {
+		l := lexer.New(tt.input)
+		p := New(l)
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if actual := program.String(); actual != tt.expected {
+			t.Errorf("expected=%q, got=%q", tt.expected, actual)
+		}
+	}
+}
+
 func TestIfExpressions(t *testing.T) {
 	input := `if (x < y) { x }`
 
@@ -414,53 +465,57 @@ func TestIfExpressions(t *testing.T) {
 	}
 }
 
-func TestOperatorPrecedenceParsing(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected string
-	}{
-		{
-			"true",
-			"true",
-		},
-		{
-			"false",
-			"false",
-		},
-		{
-			"3 > 5 == false",
-			"((3 > 5) == false)",
-		},
-		{
-			"3 < 5 == true",
-			"((3 < 5) == true)",
-		},
-		{
-			"1 + (2 + 3) + 4",
-			"((1 + (2 + 3)) + 4)",
-		},
-		{
-			"(5 + 5) * 2",
-			"((5 + 5) * 2)",
-		},
-		{
-			"2 / (5 + 5)",
-			"(2 / (5 + 5))",
-		},
-		{
-			"!(true == true)",
-			"(!(true == true))",
-		},
+func TestIfElseExpression(t *testing.T) {
+	input := `if (x < y) { x } else { y }`
+
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("Program does not contain %d statements. got=%d\n", 1, len(program.Statements))
 	}
 
-	for _, tt := range tests {
-		l := lexer.New(tt.input)
-		p := New(l)
-		program := p.ParseProgram()
-		checkParserErrors(t, p)
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
 
-		if actual := program.String(); actual != tt.expected {
-			t.Errorf("expected=%q, got=%q", tt.expected, actual)
-		}
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.IfExpression)
+
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.IfExpression. got=%T", stmt.Expression)
+	}
+
+	if !testInfixExpression(t, exp.Condition, "x", "<", "y") {
+		return
+	}
+
+	if len(exp.Consequence.Statements) != 1 {
+		t.Errorf("exp.Consequence is not 1 statement. got=%d", len(exp.Consequence.Statements))
+	}
+
+	consequence, ok := exp.Consequence.Statements[0].(*ast.ExpressionStatement)
+
+	if !ok {
+		t.Fatalf("Consequence.Statements[0] is not ast.ExpressionStatement. got=%T", exp.Consequence.Statements[0])
+	}
+
+	if !testIdentifier(t, consequence.Expression, "x") {
+		return
+	}
+
+	alt, ok := exp.Alternative.Statements[0].(*ast.ExpressionStatement)
+
+	if !ok {
+		t.Fatalf("Alternative.Statements[0] is not ast.ExpressionStatement. got=%T", exp.Alternative.Statements[0])
+	}
+
+	if !testIdentifier(t, alt.Expression, "y") {
+		return
 	}
 }
