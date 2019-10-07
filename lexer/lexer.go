@@ -1,6 +1,6 @@
 package lexer
 
-import "gitlab.com/ishankhare07/monkey-lang/token"
+import "monkey/token"
 
 type Lexer struct {
 	input        string
@@ -27,7 +27,7 @@ func (l *Lexer) readChar() {
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
-	return token.Token{tokenType, string(ch)}
+	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
 func (l *Lexer) readIdentifier() string {

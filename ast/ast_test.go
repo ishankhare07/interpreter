@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"gitlab.com/ishankhare07/monkey-lang/token"
+	"monkey/token"
 	"testing"
 )
 
