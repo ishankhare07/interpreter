@@ -2,7 +2,7 @@ image: golang:1.13
 
 before_script:
     - mkdir -p /go/src/gitlab.com/ishankhare07/monkey-lang
-    - cp -r /builds/ishankhare07/monkey-lang /go/src/gitlab.com/ishankhare07/monkey-lang
+    - cp -r /builds/ishankhare07/monkey-lang /go/src/gitlab.com/ishankhare07/
 
 test:
     stage: test
